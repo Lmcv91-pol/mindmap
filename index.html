@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mind Map</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      text-align: center;
+    }
+    #mindmap-container {
+      margin: 20px;
+      overflow: auto;
+    }
+    button {
+      margin: 20px;
+      padding: 10px 20px;
+      background: #0070f3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    svg {
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <button id="expand-all-btn">Expand All</button>
+  <div id="mindmap-container"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const rawData = {
+        name: "Surveillance and the City",
+        children: [
+          {
+            name: "Negotiating Visibility",
+            children: [
+              { name: "Encrypted Communication" },
+              { name: "Pseudonymous Accounts" }
+            ]
+          },
+          {
+            name: "Digital Activism",
+            children: [
+              { name: "Hacktivism" },
+              { name: "Citizen Journalism" }
+            ]
+          }
+        ]
+      };
+
+      const width = 1200, height = 800;
+      const svg = d3.select("#mindmap-container").append("svg").attr("width", width).attr("height", height);
+      const g = svg.append("g").attr("transform", "translate(100,100)");
+      svg.call(d3.zoom().on("zoom", (event) => g.attr("transform", event.transform)));
+
+      const tree = d3.tree().nodeSize([100, 200]);
+      const root = d3.hierarchy(rawData);
+      root.x0 = 0;
+      root.y0 = 0;
+
+      function collapse(node) {
+        if (node.children) {
+          node._children = node.children;
+          node._children.forEach(collapse);
+          node.children = null;
+        }
+      }
+
+      root.children.forEach(collapse);
+
+      function update(source) {
+        tree(root);
+        const nodes = root.descendants();
+        const links = root.links();
+
+        g.selectAll("path.link")
+          .data(links, d => d.target.data.name)
+          .join("path")
+          .attr("fill", "none")
+          .attr("stroke", "#ccc")
+          .attr("stroke-width", 1.5)
+          .attr("d", d3.linkVertical().x(d => d.x).y(d => d.y));
+
+        const node = g.selectAll("g.node")
+          .data(nodes, d => d.data.name)
+          .join(
+            enter => {
+              const group = enter.append("g")
+                .attr("class", "node")
+                .attr("transform", d => \`translate(\${source.x0},\${source.y0})\`)
+                .style("cursor", "pointer")
+                .on("click", (event, d) => {
+                  if (d.children) {
+                    d._children = d.children;
+                    d.children = null;
+                  } else {
+                    d.children = d._children;
+                    d._children = null;
+                  }
+                  update(d);
+                });
+
+              group.append("circle").attr("r", 5).attr("fill", "#0070f3");
+
+              group.append("text")
+                .attr("dy", "0.35em")
+                .attr("x", d => d.children || d._children ? -10 : 10)
+                .attr("text-anchor", d => d.children || d._children ? "end" : "start")
+                .style("font-size", "14px")
+                .text(d => d.data.name);
+
+              return group.attr("transform", d => \`translate(\${d.x},\${d.y})\`);
+            }
+          );
+
+        nodes.forEach(d => {
+          d.x0 = d.x;
+          d.y0 = d.y;
+        });
+      }
+
+      update(root);
+
+      document.getElementById("expand-all-btn").addEventListener("click", () => {
+        function expand(node) {
+          if (node._children) {
+            node.children = node._children;
+            node._children = null;
+          }
+          if (node.children) node.children.forEach(expand);
+        }
+        expand(root);
+        update(root);
+      });
+    });
+  </script>
+</body>
+</html>
