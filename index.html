@@ -299,7 +299,7 @@
       const links = root.links();
 
 const link = g.selectAll("path.link")
-  .data(links, d => d.target.data.name);
+.data(links, d => d.target.ancestors().map(n => n.data.name).join("/"))
 
 link.exit().remove();
 
