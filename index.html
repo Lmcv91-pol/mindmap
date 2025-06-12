@@ -1,11 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Mind Map – Surveillance and the City</title>
   <style>
-    body { font-family: sans-serif; background: #f0f0f0; margin: 0; padding: 20px; text-align: center; }
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
     button {
       background-color: #0070f3;
       color: white;
@@ -16,12 +21,10 @@
       cursor: pointer;
       margin-bottom: 20px;
     }
-    svg { background: white; border: 1px solid #ccc; }
-    .link { fill: none; stroke: #ccc; stroke-width: 1.5px; }
-    .node circle { fill: #0070f3; }
-    .node rect { fill: #e67e22; width: 20px; height: 20px; x: -10; y: -10; }
-    .node text { font-size: 13px; font-family: sans-serif; }
-    .reference { fill: #333; font-size: 11px; font-style: italic; }
+    svg {
+      background: white;
+      border: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
@@ -29,15 +32,169 @@
   <svg id="mindmap" width="3000" height="3000"></svg>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script>
+    const rawData = {
+      name: "Surveillance and the City",
+      children: [
+        {
+          name: "Negotiating Visibility",
+          children: [
+            { name: "Tactical Anonymity", children: [
+              { name: "Encrypted Communication" },
+              { name: "Pseudonymous Accounts" },
+              { name: "Decentralized Networks" },
+              { name: "Avoiding Biometric Surveillance" },
+              { name: "Public Protest Strategies" }
+            ]},
+            { name: "Literature", literature: true, children: [
+              { name: "Georg Simmel (1903)", reference: "Anonymity fosters freedom but also detachment in the metropolis." },
+              { name: "Louis Wirth (1938)", reference: "Urban anonymity brings isolation but also freedom from control." },
+              { name: "Jane Jacobs (1961)", reference: "Anonymity enables informal safety through 'eyes on the street'." },
+              { name: "Richard Sennett (1977)", reference: "Loss of public anonymity erodes civic life." },
+              { name: "Mike Davis (1990)", reference: "Militarized urban space challenges anonymity and freedom." },
+              { name: "David Lyon (2001)", reference: "Surveillance undermines anonymity, reinforces discrimination." }
+            ]},
+            { name: "Anonymity vs Visibility", children: [
+              { name: "Activist Trade-offs" },
+              { name: "Governance Exploitation" },
+              { name: "Corporate Data Pressure" }
+            ]}
+          ]
+        },
+        {
+          name: "Right to the City",
+          children: [
+            { name: "Literature", literature: true, children: [
+              { name: "Lefebvre (1967)", reference: "Urban space should be collectively reimagined, not commodified." },
+              { name: "Harvey (2008)", reference: "'A right to change ourselves by changing the city'." }
+            ]},
+            { name: "Public vs Private Space", children: [
+              { name: "Legal Challenges" },
+              { name: "Ownership & Access" }
+            ]}
+          ]
+        }
+      ]
+    };
 
-// D3 logic will go here — in actual deployment this would contain full tree rendering
-d3.select("#mindmap")
-  .append("text")
-  .attr("x", 50)
-  .attr("y", 50)
-  .style("font-size", "20px")
-  .text("✅ Complete mind map loaded. Full functionality here.");
+    const svg = d3.select("#mindmap");
+    const g = svg.append("g").attr("transform", "translate(100,100)");
+    svg.call(d3.zoom().on("zoom", (event) => {
+      g.attr("transform", event.transform);
+    }));
 
+    const treeLayout = d3.tree().nodeSize([150, 300]);
+    const root = d3.hierarchy(rawData);
+    root.x0 = 0;
+    root.y0 = 0;
+
+    function collapse(node) {
+      if (node.children) {
+        node._children = node.children;
+        node._children.forEach(collapse);
+        node.children = null;
+      }
+    }
+    root.children.forEach(collapse);
+
+    function update(source) {
+      treeLayout(root);
+      const nodes = root.descendants();
+      const links = root.links();
+
+      g.selectAll("path.link")
+        .data(links, d => d.target.ancestors().map(n => n.data.name).join("/"))
+        .join(
+          enter => enter.append("path")
+            .attr("class", "link")
+            .attr("fill", "none")
+            .attr("stroke", "#ccc")
+            .attr("stroke-width", 1.5)
+            .attr("d", d3.linkVertical().x(d => d.x).y(d => d.y))
+        )
+        .transition().duration(500)
+        .attr("d", d3.linkVertical().x(d => d.x).y(d => d.y));
+
+      const node = g.selectAll("g.node")
+        .data(nodes, d => d.data.name)
+        .join(
+          enter => {
+            const group = enter.append("g")
+              .attr("class", "node")
+              .attr("transform", d => `translate(${source.x0},${source.y0})`)
+              .style("cursor", "pointer")
+              .on("click", (event, d) => {
+                if (d.children) {
+                  d._children = d.children;
+                  d.children = null;
+                } else {
+                  d.children = d._children;
+                  d._children = null;
+                }
+                update(d);
+                const scale = 1.5;
+                const tx = svg.node().clientWidth / 2 - d.x * scale;
+                const ty = svg.node().clientHeight / 2 - d.y * scale;
+                svg.transition()
+                  .duration(750)
+                  .call(d3.zoom().transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+              });
+
+            if (d => d.data.literature) {
+              group.append("rect")
+                .attr("width", 20).attr("height", 20)
+                .attr("x", -10).attr("y", -10)
+                .attr("fill", "#e67e22");
+            } else {
+              group.append("circle")
+                .attr("r", 5)
+                .attr("fill", "#0070f3");
+            }
+
+            group.append("text")
+              .attr("dy", "0.35em")
+              .attr("x", d => d.children || d._children ? -12 : 12)
+              .attr("text-anchor", d => d.children || d._children ? "end" : "start")
+              .text(d => d.data.name);
+
+            // Reference text
+            group.filter(d => d.data.reference).append("text")
+              .attr("class", "reference")
+              .attr("x", 0)
+              .attr("y", 12)
+              .attr("text-anchor", "middle")
+              .selectAll("tspan")
+              .data(d => d.data.reference.split(/(?<=\\b\\w{5,}[.,]?)/g))
+              .join("tspan")
+              .attr("x", 0)
+              .attr("dy", "1.2em")
+              .text(d => d);
+
+            return group.transition().duration(500)
+              .attr("transform", d => `translate(${d.x},${d.y})`);
+          },
+          update => update.transition().duration(500)
+            .attr("transform", d => `translate(${d.x},${d.y})`)
+        );
+
+      nodes.forEach(d => {
+        d.x0 = d.x;
+        d.y0 = d.y;
+      });
+    }
+
+    update(root);
+
+    document.getElementById("expand-all-btn").onclick = () => {
+      function expand(node) {
+        if (node._children) {
+          node.children = node._children;
+          node._children = null;
+        }
+        if (node.children) node.children.forEach(expand);
+      }
+      expand(root);
+      update(root);
+    };
   </script>
 </body>
 </html>
