@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Mind Map – Surveillance and the City</title>
+  <meta charset="UTF-8" />
+  <title>Mind Map</title>
   <style>
     body {
       font-family: sans-serif;
       background: #f0f0f0;
-      text-align: center;
       margin: 0;
       padding: 20px;
+      text-align: center;
     }
     button {
       background-color: #0070f3;
@@ -29,7 +29,8 @@
 </head>
 <body>
   <button id="expand-all-btn">Expand All</button>
-  <svg id="mindmap" width="3000" height="3000"></svg>
+  <svg id="mindmap" width="2400" height="2000"></svg>
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script>
     const rawData = {
@@ -38,39 +39,232 @@
         {
           name: "Negotiating Visibility",
           children: [
-            { name: "Tactical Anonymity", children: [
-              { name: "Encrypted Communication" },
-              { name: "Pseudonymous Accounts" },
-              { name: "Decentralized Networks" },
-              { name: "Avoiding Biometric Surveillance" },
-              { name: "Public Protest Strategies" }
-            ]},
-            { name: "Literature", literature: true, children: [
-              { name: "Georg Simmel (1903)", reference: "Anonymity fosters freedom but also detachment in the metropolis." },
-              { name: "Louis Wirth (1938)", reference: "Urban anonymity brings isolation but also freedom from control." },
-              { name: "Jane Jacobs (1961)", reference: "Anonymity enables informal safety through 'eyes on the street'." },
-              { name: "Richard Sennett (1977)", reference: "Loss of public anonymity erodes civic life." },
-              { name: "Mike Davis (1990)", reference: "Militarized urban space challenges anonymity and freedom." },
-              { name: "David Lyon (2001)", reference: "Surveillance undermines anonymity, reinforces discrimination." }
-            ]},
-            { name: "Anonymity vs Visibility", children: [
-              { name: "Activist Trade-offs" },
-              { name: "Governance Exploitation" },
-              { name: "Corporate Data Pressure" }
-            ]}
+            {
+              name: "Tactical Anonymity",
+              children: [
+                { name: "Encrypted Communication" },
+                { name: "Pseudonymous Accounts" },
+                { name: "Decentralized Networks" },
+                { name: "Avoiding Biometric Surveillance" },
+                { name: "Public Protest Strategies" }
+              ]
+            },
+            {
+              name: "Anonymity vs Visibility",
+              children: [
+                { name: "Activist Trade-offs" },
+                { name: "Governance Exploitation" },
+                { name: "Corporate Data Pressure" }
+              ]
+            },
+            {
+              name: "Psychological Impact",
+              children: [
+                { name: "Behavioral Conformity" },
+                { name: "Public Interaction Shifts" }
+              ]
+            },
+            {
+              name: "Legal Frameworks",
+              children: [
+                { name: "Privacy Laws" },
+                { name: "Urban Planning & Surveillance" }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Digital Activism",
+          children: [
+            {
+              name: "Strategies",
+              children: [
+                { name: "Awareness Campaigns" },
+                { name: "Hacktivism" },
+                { name: "Data Obfuscation" }
+              ]
+            },
+            {
+              name: "Social Media & Mobilization",
+              children: [
+                { name: "Hashtag Campaigns" },
+                { name: "Event Coordination" },
+                { name: "Algorithmic Suppression" }
+              ]
+            },
+            {
+              name: "Collaborative Tools",
+              children: [
+                { name: "Citizen Journalism" },
+                { name: "Whistleblower Platforms" }
+              ]
+            },
+            { name: "Case Studies" }
+          ]
+        },
+        {
+          name: "Facial Recognition & Biometrics",
+          children: [
+            {
+              name: "Ethics",
+              children: [
+                { name: "Consent & Bias" },
+                { name: "False Positives" }
+              ]
+            },
+            {
+              name: "Urban Implementation",
+              children: [
+                { name: "City Case Studies" },
+                { name: "Surveillance Infrastructure" }
+              ]
+            },
+            { name: "Accuracy & Bias" },
+            { name: "Integration with Other Tech" }
+          ]
+        },
+        {
+          name: "Surveillance Capitalism",
+          children: [
+            {
+              name: "Data Collection",
+              children: [
+                { name: "Smart City Sensors" },
+                { name: "Tracking Software" }
+              ]
+            },
+            {
+              name: "Corporate-State Nexus",
+              children: [
+                { name: "Cloud Contracts" },
+                { name: "Legitimizing Narratives" }
+              ]
+            },
+            {
+              name: "Snowden Revelations",
+              children: [
+                { name: "Legislative Reactions" },
+                { name: "Blurred Boundaries" }
+              ]
+            },
+            {
+              name: "Human Rights & Encryption",
+              children: [
+                { name: "Civil Liberties Framing" },
+                { name: "Technology Industry Positioning" }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Chilling Effects",
+          children: [
+            {
+              name: "Behavioral Change",
+              children: [
+                { name: "Self-Censorship" },
+                { name: "Reduced Dissent" }
+              ]
+            },
+            {
+              name: "Impact on Marginalized Groups",
+              children: [
+                { name: "Visibility as Vulnerability" },
+                { name: "Policing of Expression" }
+              ]
+            },
+            {
+              name: "Urban Design & Civic Engagement",
+              children: [
+                { name: "Architecture of Control" },
+                { name: "Camera Presence & Fear" }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Identity & Community",
+          children: [
+            {
+              name: "Diasporic Identity",
+              children: [
+                { name: "Surveillance Impact" },
+                { name: "Cultural Navigation" }
+              ]
+            },
+            {
+              name: "Cultural Resistance",
+              children: [
+                { name: "Art & Expression" },
+                { name: "Festivals & Narratives" }
+              ]
+            },
+            {
+              name: "Digital Communities",
+              children: [
+                { name: "Online Forums" },
+                { name: "Identity Building" }
+              ]
+            },
+            {
+              name: "Gendered Surveillance",
+              children: [
+                { name: "Masculine Gaze" },
+                { name: "Harassment & Privacy" }
+              ]
+            }
           ]
         },
         {
           name: "Right to the City",
           children: [
-            { name: "Literature", literature: true, children: [
-              { name: "Lefebvre (1967)", reference: "Urban space should be collectively reimagined, not commodified." },
-              { name: "Harvey (2008)", reference: "'A right to change ourselves by changing the city'." }
-            ]},
-            { name: "Public vs Private Space", children: [
-              { name: "Legal Challenges" },
-              { name: "Ownership & Access" }
-            ]}
+            {
+              name: "Public vs Private Space",
+              children: [
+                { name: "Legal Challenges" },
+                { name: "Ownership & Access" }
+              ]
+            },
+            {
+              name: "Urban Design & Inclusion",
+              children: [
+                { name: "Participatory Planning" },
+                { name: "Spatial Justice" }
+              ]
+            },
+            {
+              name: "Harvey & Lefebvre’s Theories",
+              children: [
+                { name: "Democratic Space" },
+                { name: "Production of Urban Life" }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Urban Securitization",
+          children: [
+            {
+              name: "Security Assemblage",
+              children: [
+                { name: "Institutional Networks" },
+                { name: "Technology Layers" }
+              ]
+            },
+            {
+              name: "Spatial Exclusion",
+              children: [
+                { name: "Privatized Publics" },
+                { name: "Gated Surveillance" }
+              ]
+            },
+            {
+              name: "Surveillance & Democracy",
+              children: [
+                { name: "Rights vs Power" },
+                { name: "Public Debate" }
+              ]
+            }
           ]
         }
       ]
@@ -78,11 +272,12 @@
 
     const svg = d3.select("#mindmap");
     const g = svg.append("g").attr("transform", "translate(100,100)");
+
     svg.call(d3.zoom().on("zoom", (event) => {
       g.attr("transform", event.transform);
     }));
 
-    const treeLayout = d3.tree().nodeSize([150, 300]);
+    const treeLayout = d3.tree().nodeSize([100, 200]);
     const root = d3.hierarchy(rawData);
     root.x0 = 0;
     root.y0 = 0;
@@ -94,6 +289,7 @@
         node.children = null;
       }
     }
+
     root.children.forEach(collapse);
 
     function update(source) {
@@ -101,18 +297,21 @@
       const nodes = root.descendants();
       const links = root.links();
 
-      g.selectAll("path.link")
-        .data(links, d => d.target.ancestors().map(n => n.data.name).join("/"))
-        .join(
-          enter => enter.append("path")
-            .attr("class", "link")
-            .attr("fill", "none")
-            .attr("stroke", "#ccc")
-            .attr("stroke-width", 1.5)
-            .attr("d", d3.linkVertical().x(d => d.x).y(d => d.y))
-        )
-        .transition().duration(500)
-        .attr("d", d3.linkVertical().x(d => d.x).y(d => d.y));
+const link = g.selectAll("path.link")
+.data(links, d => d.target.ancestors().map(n => n.data.name).join("/"))
+
+link.exit().remove();
+
+link.enter()
+  .append("path")
+  .attr("class", "link")
+  .attr("fill", "none")
+  .attr("stroke", "#ccc")
+  .attr("stroke-width", 1.5)
+  .merge(link)
+  .transition()
+  .duration(500)
+  .attr("d", d3.linkVertical().x(d => d.x).y(d => d.y));
 
       const node = g.selectAll("g.node")
         .data(nodes, d => d.data.name)
@@ -131,43 +330,30 @@
                   d._children = null;
                 }
                 update(d);
-                const scale = 1.5;
-                const tx = svg.node().clientWidth / 2 - d.x * scale;
-                const ty = svg.node().clientHeight / 2 - d.y * scale;
-                svg.transition()
-                  .duration(750)
-                  .call(d3.zoom().transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
               });
 
-            if (d => d.data.literature) {
-              group.append("rect")
-                .attr("width", 20).attr("height", 20)
-                .attr("x", -10).attr("y", -10)
-                .attr("fill", "#e67e22");
-            } else {
-              group.append("circle")
-                .attr("r", 5)
-                .attr("fill", "#0070f3");
-            }
+            group.append("circle").attr("r", 5).attr("fill", "#0070f3");
 
             group.append("text")
               .attr("dy", "0.35em")
-              .attr("x", d => d.children || d._children ? -12 : 12)
+              .attr("x", d => d.children || d._children ? -10 : 10)
               .attr("text-anchor", d => d.children || d._children ? "end" : "start")
-              .text(d => d.data.name);
-
-            // Reference text
-            group.filter(d => d.data.reference).append("text")
-              .attr("class", "reference")
-              .attr("x", 0)
-              .attr("y", 12)
-              .attr("text-anchor", "middle")
-              .selectAll("tspan")
-              .data(d => d.data.reference.split(/(?<=\\b\\w{5,}[.,]?)/g))
-              .join("tspan")
-              .attr("x", 0)
-              .attr("dy", "1.2em")
-              .text(d => d);
+              .style("font-size", "14px")
+              .style("font-family", "sans-serif")
+              .text(d => d.data.name)
+              .call(text => {
+                text.each(function (d) {
+                  const self = d3.select(this);
+                  const words = d.data.name.split(" ");
+                  self.text(null);
+                  words.forEach((word, i) => {
+                    self.append("tspan")
+                      .text(word)
+                      .attr("x", d.children || d._children ? -10 : 10)
+                      .attr("dy", i === 0 ? 0 : "1.1em");
+                  });
+                });
+              });
 
             return group.transition().duration(500)
               .attr("transform", d => `translate(${d.x},${d.y})`);
@@ -184,7 +370,7 @@
 
     update(root);
 
-    document.getElementById("expand-all-btn").onclick = () => {
+    document.getElementById("expand-all-btn").addEventListener("click", () => {
       function expand(node) {
         if (node._children) {
           node.children = node._children;
@@ -194,7 +380,7 @@
       }
       expand(root);
       update(root);
-    };
+    });
   </script>
 </body>
 </html>
