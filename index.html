@@ -322,16 +322,28 @@ link.enter()
               .attr("class", "node")
               .attr("transform", d => `translate(${source.x0},${source.y0})`)
               .style("cursor", "pointer")
-              .on("click", (event, d) => {
-                if (d.children) {
-                  d._children = d.children;
-                  d.children = null;
-                } else {
-                  d.children = d._children;
-                  d._children = null;
-                }
-                update(d);
-              });
+             .on("click", (event, d) => {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+
+  update(d);
+
+  // Zoom to the clicked node
+  const scale = 1.5; // You can adjust this zoom level
+  const translate = [svg.node().clientWidth / 2 - d.x * scale, svg.node().clientHeight / 2 - d.y * scale];
+
+  svg.transition()
+    .duration(750)
+    .call(
+      d3.zoom().transform,
+      d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
+    );
+});
 
             group.append("circle").attr("r", 5).attr("fill", "#0070f3");
 
